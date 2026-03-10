@@ -1,2 +1,7 @@
 streamlit
+pandas
 numpy
+requests
+py3Dmol
+rdkit-pypi
+openbabel-wheel
