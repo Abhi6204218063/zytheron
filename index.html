@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Zytheron AI Drug Discovery</title>
+
+<script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6fb;
+margin:0;
+text-align:center;
+}
+
+header{
+background:#0f172a;
+color:white;
+padding:20px;
+font-size:28px;
+}
+
+.container{
+margin-top:40px;
+}
+
+button{
+padding:10px 20px;
+margin:10px;
+font-size:16px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1e40af;
+}
+
+#viewer{
+width:800px;
+height:500px;
+margin:auto;
+margin-top:30px;
+border:2px solid #ccc;
+background:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+Zytheron AI Drug Discovery Platform
+</header>
+
+<div class="container">
+
+<h2>Upload Protein Structure</h2>
+
+<input type="file" id="protein" accept=".pdb">
+
+<br>
+
+<button onclick="uploadProtein()">Upload Protein</button>
+
+<button onclick="runPipeline()">Run Pipeline</button>
+
+<div id="viewer"></div>
+
+</div>
+
+<script>
+
+let viewer = $3Dmol.createViewer("viewer",{backgroundColor:"white"})
+
+function uploadProtein(){
+
+let file = document.getElementById("protein").files[0]
+
+if(!file){
+alert("Please select a protein file")
+return
+}
+
+let reader = new FileReader()
+
+reader.onload = function(e){
+
+viewer.clear()
+
+viewer.addModel(e.target.result,"pdb")
+
+viewer.setStyle({}, {cartoon:{color:"spectrum"}})
+
+viewer.zoomTo()
+
+viewer.render()
+
+}
+
+reader.readAsText(file)
+
+let form = new FormData()
+
+form.append("file",file)
+
+fetch("http://localhost:5000/upload_protein",{
+method:"POST",
+body:form
+})
+
+}
+
+function runPipeline(){
+
+fetch("http://localhost:5000/run_pipeline",{
+method:"POST"
+})
+
+alert("Pipeline started")
+
+}
+
+</script>
+
+</body>
+
+</html>

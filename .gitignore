@@ -1,0 +1,11 @@
+converted/
+*.pdbqt
+*.pdb
+*.mol
+*.smi
+*.csv
+*.png
+results/
+uploads/
+venv/
+__pycache__/
